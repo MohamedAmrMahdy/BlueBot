@@ -1,0 +1,12 @@
+{
+    "name": "BlueBot",
+    "description": "A Discord Bot",
+    "version": "0.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "discord.js": "11.4.0"
+    }
+}
