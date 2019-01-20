@@ -1,11 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-// Trigger Bot Started
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
 // Trigger New Message Sent
 client.on('message', msg => {
 
@@ -19,7 +14,10 @@ client.on('message', msg => {
 // Login Identity
 client.login(process.env.BOT_IDENTITY);
 
-//DEBUG
-client.on('error', (e) => console.error(e));
-client.on('warn', (e) => console.warn(e));
-client.on('debug', (e) => console.info(e));
+// DEBUG / INFO
+client.on('ready', () => console.log(`Bot Logged in as ${client.user.tag}!`))
+    .on('disconnect', () => console.warn("Bot is disconnecting..."))
+    .on('reconnecting', () => console.log("Bot reconnecting..."))
+    .on('error', (e) => console.error(e))
+    .on('warn', (e) => console.warn(e))
+    .on('debug', (e) => console.info(e));
