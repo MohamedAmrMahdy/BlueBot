@@ -1,5 +1,5 @@
 {
-    "name": "BlueBot",
+    "name": "blue-bot",
     "description": "A Discord Bot",
     "version": "0.0.1",
     "main": "bot.js",
@@ -7,6 +7,7 @@
         "start": "node bot.js"
     },
     "dependencies": {
-        "discord.js": "11.4.0"
+        "discord.js": "11.4.0",
+        "firebase-admin": "^6.5.0"
     }
 }
