@@ -34,7 +34,7 @@ client.on('message', msg => {
 
     //Check if Self Talking & Using Prefix
     if(msg.author.id == client.id ||
-        message.prefix != SERVER_PREFIX
+        message.prefix != server_prefix
         ) return;
 
     //switch between commands
