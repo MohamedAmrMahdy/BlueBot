@@ -14,10 +14,12 @@
 - RP System
 
 ### Commands
-| Command | Description |
-| ------ | ------ |
-|Ping|Used to Test for Bot Response Time and check it's availablity |
-|Prefix|Change Bot Prefix for your server (default prefix : " * " ) |
+| Command | Description | Example |
+| ------ | ------ | ------ |
+|Ping|Used to Test for Bot Response Time and check it's availablity | *ping |
+|Prefix [New Prefix]|Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
+|Quickpoll [Question]|ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
+|Random [X] [Y] | gat a random number between x and y | *random 1 100 |
 
 
 # TODO List:
@@ -27,9 +29,9 @@
 - [x] Make Configurable Prefix
 - [ ] Add Calculate command ( evaluates input )
 - *calc [Equation] ( return result )
-- [ ] Add Quickpoll command 
+- [x] Add Quickpoll command 
 - *quickpoll [Question] ( return yes or no randomly on any question written)
-- [ ] Add Random command 
+- [x] Add Random command 
 - *random [X] [Y] ( return random number between X and Y)
 - [ ] Add server info command ( return all needed stats about the server )
 - [ ] Add Purge command 

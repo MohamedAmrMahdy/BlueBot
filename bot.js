@@ -5,19 +5,21 @@ let dataBase = require('./database');
 // Trigger New Message Sent
 client.on('message', msg => {
     //Restructure the message
-    const message = {   
-        prefix: msg.content[0] , 
+    const message = {
+        prefix: msg.content[0],
         command: msg.content.toLowerCase().slice(1).split(" ")[0],
         args: msg.content.toLowerCase().split(" ").slice(1),
     }
 
     //get server prefix
     let server_prefix = "*"
-    dataBase.ref('/servers/'+msg.guild.id+'/prefix')
-            .on('value', (snapshot)=>{ server_prefix = snapshot.val() });
+    dataBase.ref('/servers/' + msg.guild.id + '/prefix')
+        .on('value', (snapshot) => {
+            server_prefix = snapshot.val()
+        });
 
     //Check if Self Talking & Using Prefix
-    if(msg.author.id == client.id || message.prefix != server_prefix) return;
+    if (msg.author.id == client.id || message.prefix != server_prefix) return;
 
     //switch between commands
     switch (message.command) {
@@ -28,16 +30,29 @@ client.on('message', msg => {
             });
             break;
 
-        //Reset The Server Data on the database
+            //Reset The Server Data on the database
         case "resetthisserver":
-            dataBase.ref('/servers/' + msg.guild.id).set({name: msg.guild.name , prefix: '$'});
+            dataBase.ref('/servers/' + msg.guild.id).set({
+                name: msg.guild.name,
+                prefix: '$'
+            });
             msg.reply("Reset Success");
             break;
 
-        //Change Server Prefix on the database
+            //Change Server Prefix on the database
         case "prefix":
             dataBase.ref('/servers/' + msg.guild.id + '/prefix').set(message.args[0]);
             msg.reply("Prefix Changed Successfully to : " + message.args[0]);
+            break;
+
+            //Return Random Yes or No
+        case "quickpoll":
+            msg.reply(`${Math.random() >= 0.5? " Yes" : " No" }`);
+            break;
+
+            //Return Random number between range given
+        case "random":
+            msg.reply(`${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}`);
             break;
 
         default:
@@ -54,7 +69,10 @@ client.login(process.env.BOT_IDENTITY);
 client.on("guildCreate", guild => {
     console.log("Bot Joined a new Server: " + guild.name);
     //Add the server to the databse with default settings
-    dataBase.ref('/servers/' + guild.id).set({name: guild.name , prefix: '$'});
+    dataBase.ref('/servers/' + guild.id).set({
+        name: guild.name,
+        prefix: '$'
+    });
 });
 
 //Removed from a server
@@ -66,9 +84,11 @@ client.on("guildDelete", guild => {
 
 // DEBUG / INFO
 client.on('ready', () => {
-    console.log(`Bot Logged in as ${client.user.tag}!`)
-    //Update the Database servers count where the bot exists
-    dataBase.ref('/botstates/').set({servers: client.guilds.size});
+        console.log(`Bot Logged in as ${client.user.tag}!`)
+        //Update the Database servers count where the bot exists
+        dataBase.ref('/botstates/').set({
+            servers: client.guilds.size
+        });
     })
     .on('disconnect', () => console.warn("Bot is disconnecting..."))
     .on('reconnecting', () => console.log("Bot reconnecting..."))
