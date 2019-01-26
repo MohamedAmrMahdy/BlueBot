@@ -1,6 +1,6 @@
 # BlueBot
 ## A Multi-functional Disocrd Bot with fully configurable settings per server 
-### Made WIth 
+### Made With 💖 and lots of ☕ 
 
 # Features!
 - Fully configurable  
@@ -36,7 +36,7 @@
 - *random [X] [Y] ( return random number between X and Y)
 - [X] Add Purge command 
 - *purge [N] ( delete N messages in the channel )
-- [ ] Show Number of servers the bot existed in with the number of clients served
+- [X] Show Number of servers the bot existed in with the number of clients served and channels
 - [ ] Add Show Bot Information Command
 - [ ] Add server info command ( return all needed stats about the server )
 - [ ] Add Help Command ( Shows all info about bot and commands )

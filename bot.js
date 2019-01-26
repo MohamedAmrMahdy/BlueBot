@@ -58,8 +58,8 @@ client.on('message', async msg => {
         //Delete [delNum] Messages in channel
         case 'purge':
             const delNum = parseInt(message.args[0],10);
-            if ( !delNum || delNum < 2 || delNum > 200 )
-                return msg.reply("Please provide a number between 2 and 200");
+            if ( !delNum || delNum < 2 || delNum > 100 )
+                return msg.reply("Please provide a number between 2 and 100");
             //return messages to delete 
             const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
             msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
@@ -75,29 +75,33 @@ client.on('message', async msg => {
 // Login Identity
 client.login(process.env.BOT_IDENTITY);
 
-//Joined a server
-client.on("guildCreate", guild => {
-    console.log("Bot Joined a new Server: " + guild.name);
-    //Add the server to the databse with default settings
-    dataBase.ref('/servers/' + guild.id).set({
-        name: guild.name,
-        prefix: '$'
-    });
-});
-
-//Removed from a server
-client.on("guildDelete", guild => {
-    console.log("Bot Left a Server: " + guild.name);
-    //Remove the server to the databse with default settings
-    dataBase.ref('/servers/' + guild.id).remove();
-});
-
-// DEBUG / INFO
-client.on('ready', () => {
+client.on('guildCreate', (guild) => { //When Bot joined a server
+        console.log("Bot Joined a new Server: " + guild.name);
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+        //Add the server to the databse with default settings
+        dataBase.ref('/servers/' + guild.id).set({
+            name: guild.name,
+            prefix: '$'
+        });
+    })
+    .on('guildDelete', (guild) => { //When Bot get removed from a server
+        console.log("Bot Left a Server: " + guild.name);
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+        //Remove the server to the databse with default settings
+        dataBase.ref('/servers/' + guild.id).remove();
+    })
+    .on('guildMemberAdd', () => { //When someone join a server
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+    })
+    .on('guildMemberRemove', () => { //When someone leave a server
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+    })
+    .on('ready', () => {
         console.log(`Bot Logged in as ${client.user.tag}!`)
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`);      
         //Update the Database servers count where the bot exists
         dataBase.ref('/botstates/').set({
-            servers: client.guilds.size
+           upFrom: `${Date.now()}`
         });
     })
     .on('disconnect', () => console.warn("Bot is disconnecting..."))
