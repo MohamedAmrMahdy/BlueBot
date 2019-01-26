@@ -1,5 +1,6 @@
 # BlueBot
-##### A Multi-functional Disocrd Bot with fully configurable
+## A Multi-functional Disocrd Bot with fully configurable settings per server 
+### Made WIth 
 
 # Features!
 - Fully configurable  
@@ -19,7 +20,8 @@
 |Ping|Used to Test for Bot Response Time and check it's availablity | *ping |
 |Prefix [New Prefix]|Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
 |Quickpoll [Question]|ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
-|Random [X] [Y] | gat a random number between x and y | *random 1 100 |
+|Random [X] [Y] | get a random number between x and y | *random 1 100 |
+|Purge [X] | delete X number of messages in the channel |
 
 
 # TODO List:
@@ -27,15 +29,19 @@
 - [x] Setup Bot
 - [x] Connect to Database
 - [x] Make Configurable Prefix
-- [ ] Add Calculate command ( evaluates input )
-- *calc [Equation] ( return result )
+- [X] Add Ping Command
 - [x] Add Quickpoll command 
 - *quickpoll [Question] ( return yes or no randomly on any question written)
 - [x] Add Random command 
 - *random [X] [Y] ( return random number between X and Y)
+- [X] Add Purge command 
+- *purge [N] ( delete N messages in the channel )
+- [ ] Show Number of servers the bot existed in with the number of clients served
+- [ ] Add Show Bot Information Command
 - [ ] Add server info command ( return all needed stats about the server )
-- [ ] Add Purge command 
-- *purge [N] ( delete N messages before send message )
+- [ ] Add Help Command ( Shows all info about bot and commands )
+- [ ] Add Calculate command ( evaluates input )
+- *calc [Equation] ( return result )
 - [ ] Add Verify System ( gives a specific role to sender or auto give role to new members )
 - [ ] Add Colors System ( change name's color by giving a specific role to sender )
 - [ ] Add Join/Leave System ( Sends a message to a channel when someone join or leave the server)
@@ -43,6 +49,7 @@
 - [ ] Add Youtube Search System ( return N top results from a search query )
 - [ ] Add SoundCloud Search System ( return N top results from a search query )
 - [ ] Add Spotify Search System ( return N top results from a search query )
+- [ ] Add lyrics Command
 - [ ] Add Music Player System ( Queue of songs to play on voice channels )
 - *play [search string / URL] ( Use Youtube Search System to choose from and then play the song )
 - *playlist [search string / URL] ( Use Youtube Search System to choose from and then play the song )
@@ -61,5 +68,4 @@
 - *repeat ( repeat queue without removing any song)
 - *time ( return the time in current song)
 - *seekto [X] ( moves to the X time in current song)
-- [ ] Add Help Command ( Shows all info about bot and commands )
 - [ ] Add RP System ( Collect info about member and show stats about him / give rewards)

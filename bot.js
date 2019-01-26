@@ -3,7 +3,7 @@ const client = new Discord.Client();
 let dataBase = require('./database');
 
 // Trigger New Message Sent
-client.on('message', msg => {
+client.on('message', async msg => {
     //Restructure the message
     const message = {
         prefix: msg.content[0],
@@ -30,7 +30,7 @@ client.on('message', msg => {
             });
             break;
 
-            //Reset The Server Data on the database
+        //Reset The Server Data on the database
         case "resetthisserver":
             dataBase.ref('/servers/' + msg.guild.id).set({
                 name: msg.guild.name,
@@ -39,20 +39,30 @@ client.on('message', msg => {
             msg.reply("Reset Success");
             break;
 
-            //Change Server Prefix on the database
+        //Change Server Prefix on the database
         case "prefix":
             dataBase.ref('/servers/' + msg.guild.id + '/prefix').set(message.args[0]);
             msg.reply("Prefix Changed Successfully to : " + message.args[0]);
             break;
 
-            //Return Random Yes or No
+        //Return Random Yes or No
         case "quickpoll":
             msg.reply(`${Math.random() >= 0.5? " Yes" : " No" }`);
             break;
 
-            //Return Random number between range given
+        //Return Random number between range given
         case "random":
             msg.reply(`${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}`);
+            break;
+
+        //Delete [delNum] Messages in channel
+        case 'purge':
+            const delNum = parseInt(message.args[0],10);
+            if ( !delNum || delNum < 2 || delNum > 200 )
+                return msg.reply("Please provide a number between 2 and 200");
+            //return messages to delete 
+            const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
+            msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
             break;
 
         default:
