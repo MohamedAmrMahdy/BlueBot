@@ -13,63 +13,62 @@ client.on('message', async msg => {
 
     //get server prefix
     let server_prefix = "*"
-    dataBase.ref('/servers/' + msg.guild.id + '/prefix')
-        .on('value', (snapshot) => {
-            server_prefix = snapshot.val()
-        });
+    dataBase.ref('/servers/' + msg.guild.id + '/prefix').once('value').then( async (snapshot) => {
+        server_prefix = snapshot.val()
 
-    //Check if Self Talking & Using Prefix
-    if (msg.author.id == client.id || message.prefix != server_prefix) return;
+        //Check if Self Talking & Using Prefix
+        if (msg.author.id == client.id || message.prefix != server_prefix) return;
 
-    //switch between commands
-    switch (message.command) {
-        //Simple Command for Testing bot response
-        case "ping":
-            msg.channel.send('Testing Bot Ping.....').then(sent => {
-                sent.edit(`Bot Ping = ${(sent.createdTimestamp - msg.createdTimestamp)} ms`);
-            });
-            break;
+        //switch between commands
+        switch (message.command) {
+            //Simple Command for Testing bot response
+            case "ping":
+                msg.channel.send('Testing Bot Ping.....').then(sent => {
+                    sent.edit(`Bot Ping = ${(sent.createdTimestamp - msg.createdTimestamp)} ms`);
+                });
+                break;
 
-        //Reset The Server Data on the database
-        case "resetthisserver":
-            dataBase.ref('/servers/' + msg.guild.id).set({
-                name: msg.guild.name,
-                prefix: '$'
-            });
-            msg.reply("Reset Success");
-            break;
+            //Reset The Server Data on the database
+            case "resetthisserver":
+                dataBase.ref('/servers/' + msg.guild.id).set({
+                    name: msg.guild.name,
+                    prefix: '$'
+                });
+                msg.reply("Reset Success");
+                break;
 
-        //Change Server Prefix on the database
-        case "prefix":
-            dataBase.ref('/servers/' + msg.guild.id + '/prefix').set(message.args[0]);
-            msg.reply("Prefix Changed Successfully to : " + message.args[0]);
-            break;
+            //Change Server Prefix on the database
+            case "prefix":
+                dataBase.ref('/servers/' + msg.guild.id + '/prefix').set(message.args[0]);
+                msg.reply("Prefix Changed Successfully to : " + message.args[0]);
+                break;
 
-        //Return Random Yes or No
-        case "quickpoll":
-            msg.reply(`${Math.random() >= 0.5? " Yes" : " No" }`);
-            break;
+            //Return Random Yes or No
+            case "quickpoll":
+                msg.reply(`${Math.random() >= 0.5? " Yes" : " No" }`);
+                break;
 
-        //Return Random number between range given
-        case "random":
-            msg.reply(`${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}`);
-            break;
+            //Return Random number between range given
+            case "random":
+                msg.reply(`${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}`);
+                break;
 
-        //Delete [delNum] Messages in channel
-        case 'purge':
-            const delNum = parseInt(message.args[0],10);
-            if ( !delNum || delNum < 2 || delNum > 100 )
-                return msg.reply("Please provide a number between 2 and 100");
-            //return messages to delete 
-            const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
-            msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
-            break;
+            //Delete [delNum] Messages in channel
+            case 'purge':
+                const delNum = parseInt(message.args[0],10);
+                if ( !delNum || delNum < 2 || delNum > 100 )
+                    return msg.reply("Please provide a number between 2 and 100");
+                //return messages to delete 
+                const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
+                msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
+                break;
 
-        default:
-            msg.reply("Not A Registered Command");
-            break;
-    }
-    console.log(message);
+            default:
+                msg.reply("Not A Registered Command");
+                break;
+        }
+        console.log(message);
+    });
 });
 
 // Login Identity
