@@ -17,6 +17,7 @@
 ### Commands
 | Command | Description | Example |
 | ------ | ------ | ------ |
+|help| Used to get all commands menu with description and example| *help |
 |Ping| Used to Test for Bot Response Time and check it's availablity | *ping |
 |Prefix [New Prefix]| Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
 |Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
@@ -40,9 +41,9 @@
 - *purge [N] ( delete N messages in the channel )
 - [X] Show Number of servers the bot existed in with the number of clients served and channels
 - [X] Add Show Bot Information Command
-- [X] Add server info command ( return all needed stats about the server )
+- [X] Add Server info command ( return all needed stats about the server )
 - [X] Re-Style Messages
-- [ ] Add Help Command ( Shows all info about bot and commands )
+- [X] Add Help Command ( Shows all info about bot and commands )
 - [ ] Add Calculate command ( evaluates input )
 - *calc [Equation] ( return result )
 - [ ] Add Verify System ( gives a specific role to sender or auto give role to new members )
