@@ -4,6 +4,14 @@ const mDF = require('moment-duration-format');
 const client = new Discord.Client();
 let dataBase = require('./database');
 
+const HUMAN_LEVELS = ({
+	0: 'No Verification',
+	1: 'Low: Must Have Verified Email',
+	2: 'Medium: Must Have Verified Email & Registered on Discord for longer than 5 minutes',
+	3: '(╯°□°）╯︵ ┻━┻: Must Have Verified Email & Registered on Discord for longer than 5 minutes & Member on this server for more than 10 minutes',
+	4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻: Must Have Verified Email & Registered on Discord for longer than 5 minutes & Member on this server for more than 10 minutes & verified phone'
+});
+
 // Trigger New Message Sent
 client.on('message', async msg => {
     //Restructure the message
@@ -64,10 +72,28 @@ client.on('message', async msg => {
                 const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
                 msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
                 break;
+
             //Show Bot Information like Uptime/MemUsage/Servers/channels/users
             case 'botinfo':
                 msg.reply(`UpTime: ${moment.duration(client.uptime).format('d[d ]h[h ]m[m ]s[s]')} | Memory Usage: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB | Servers: ${client.guilds.size} | Channels: ${client.channels.size} | Clients: ${client.users.size}`);
                 break;
+
+            //Shows info all about the server   
+            case 'serverinfo':
+                msg.reply(`Server Name: ${msg.guild.name} 
+                Server ID: ${msg.guild.id} 
+                Server Verification Level: ${HUMAN_LEVELS[msg.guild.verificationLevel]}
+                Server Owner: ${msg.guild.owner}
+                Server Owner ID: ${msg.guild.ownerID}
+                Server Region: ${msg.guild.region}
+                Server Verification: ${msg.guild.verified}
+                Server Prefix: '${server_prefix}[command]' 
+                Server Members Count: ${msg.guild.members.size}
+                Server Text Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'text').size}
+                Server Voice Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'voice').size}
+                Server Creation Date: ${msg.guild.joinedAt}`)
+                break;
+
             default:
                 msg.reply("Not A Registered Command");
                 break;

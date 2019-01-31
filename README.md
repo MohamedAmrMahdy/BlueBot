@@ -23,6 +23,7 @@
 |Random [X] [Y] | Get a random number between x and y | *random 1 100 |
 |Purge [X] | Delete X number of messages in the channel | *purge 20 |
 |Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
+|Serverinfo | Show Server Information like Name/owner and other stats about the server | *serverinfo |
 
 
 # TODO List:
@@ -39,7 +40,7 @@
 - *purge [N] ( delete N messages in the channel )
 - [X] Show Number of servers the bot existed in with the number of clients served and channels
 - [X] Add Show Bot Information Command
-- [ ] Add server info command ( return all needed stats about the server )
+- [X] Add server info command ( return all needed stats about the server )
 - [ ] Add Help Command ( Shows all info about bot and commands )
 - [ ] Add Calculate command ( evaluates input )
 - *calc [Equation] ( return result )
