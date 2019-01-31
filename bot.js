@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const moment = require('moment');
+const mDF = require('moment-duration-format');
 const client = new Discord.Client();
 let dataBase = require('./database');
 
@@ -17,7 +19,7 @@ client.on('message', async msg => {
         server_prefix = snapshot.val()
 
         //Check if Self Talking & Using Prefix
-        if (msg.author.id == client.id || message.prefix != server_prefix) return;
+        if (msg.author.bot || message.prefix != server_prefix) return;
 
         //switch between commands
         switch (message.command) {
@@ -62,7 +64,10 @@ client.on('message', async msg => {
                 const fetchedMessages = await msg.channel.fetchMessages({limit: delNum});
                 msg.channel.bulkDelete(fetchedMessages).catch(e => msg.reply('Failed To Delete Messages Check Premissions'));
                 break;
-
+            //Show Bot Information like Uptime/MemUsage/Servers/channels/users
+            case 'botinfo':
+                msg.reply(`UpTime: ${moment.duration(client.uptime).format('d[d ]h[h ]m[m ]s[s]')} | Memory Usage: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB | Servers: ${client.guilds.size} | Channels: ${client.channels.size} | Clients: ${client.users.size}`);
+                break;
             default:
                 msg.reply("Not A Registered Command");
                 break;
@@ -97,11 +102,7 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
     })
     .on('ready', () => {
         console.log(`Bot Logged in as ${client.user.tag}!`)
-        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`);      
-        //Update the Database servers count where the bot exists
-        dataBase.ref('/botstates/').set({
-           upFrom: `${Date.now()}`
-        });
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`);
     })
     .on('disconnect', () => console.warn("Bot is disconnecting..."))
     .on('reconnecting', () => console.log("Bot reconnecting..."))

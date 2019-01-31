@@ -5,7 +5,7 @@
 # Features!
 - Fully configurable  
 - Fun Commands ( Calculate , Quickpoll , Random )
-- Server info
+- Server/Bot info
 - Purge messages
 - Verify System
 - Colors System
@@ -17,11 +17,12 @@
 ### Commands
 | Command | Description | Example |
 | ------ | ------ | ------ |
-|Ping|Used to Test for Bot Response Time and check it's availablity | *ping |
-|Prefix [New Prefix]|Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
-|Quickpoll [Question]|ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
-|Random [X] [Y] | get a random number between x and y | *random 1 100 |
-|Purge [X] | delete X number of messages in the channel |
+|Ping| Used to Test for Bot Response Time and check it's availablity | *ping |
+|Prefix [New Prefix]| Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
+|Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
+|Random [X] [Y] | Get a random number between x and y | *random 1 100 |
+|Purge [X] | Delete X number of messages in the channel | *purge 20 |
+|Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
 
 
 # TODO List:
@@ -37,7 +38,7 @@
 - [X] Add Purge command 
 - *purge [N] ( delete N messages in the channel )
 - [X] Show Number of servers the bot existed in with the number of clients served and channels
-- [ ] Add Show Bot Information Command
+- [X] Add Show Bot Information Command
 - [ ] Add server info command ( return all needed stats about the server )
 - [ ] Add Help Command ( Shows all info about bot and commands )
 - [ ] Add Calculate command ( evaluates input )
