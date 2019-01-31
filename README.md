@@ -1,5 +1,5 @@
 # BlueBot
-## A Multi-functional Disocrd Bot with fully configurable settings per server 
+## A Multi-functional Disocrd Bot with configurable settings for each server 
 ### Made With 💖 and lots of ☕ 
 
 # Features!
@@ -41,6 +41,7 @@
 - [X] Show Number of servers the bot existed in with the number of clients served and channels
 - [X] Add Show Bot Information Command
 - [X] Add server info command ( return all needed stats about the server )
+- [X] Re-Style Messages
 - [ ] Add Help Command ( Shows all info about bot and commands )
 - [ ] Add Calculate command ( evaluates input )
 - *calc [Equation] ( return result )

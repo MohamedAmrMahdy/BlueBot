@@ -4,6 +4,7 @@ const mDF = require('moment-duration-format');
 const client = new Discord.Client();
 let dataBase = require('./database');
 
+const DEFAULT_PREFIX = '*'
 const HUMAN_LEVELS = ({
 	0: 'No Verification',
 	1: '[Low] Must Have Verified Email',
@@ -22,7 +23,7 @@ client.on('message', async msg => {
     }
 
     //get server prefix
-    let server_prefix = "*"
+    let server_prefix = DEFAULT_PREFIX
     dataBase.ref('/servers/' + msg.guild.id + '/prefix').once('value').then( async (snapshot) => {
         server_prefix = snapshot.val()
 
@@ -42,25 +43,50 @@ client.on('message', async msg => {
             case "resetthisserver":
                 dataBase.ref('/servers/' + msg.guild.id).set({
                     name: msg.guild.name,
-                    prefix: '$'
+                    prefix: DEFAULT_PREFIX
                 });
-                msg.reply("Reset Success");
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .addField(`✇ Server Resetted Successfully`,`
+                        ➽ Name: ${msg.guild.name}
+                        ➽ Prefix: ${DEFAULT_PREFIX}
+                    `)
+                );
                 break;
 
             //Change Server Prefix on the database
             case "prefix":
                 dataBase.ref('/servers/' + msg.guild.id + '/prefix').set(message.args[0]);
-                msg.reply("Prefix Changed Successfully to : " + message.args[0]);
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .addField(`✇ Prefix Changed`,`
+                        ➽ The new server prefix now is ${message.args[0]}
+                    `)
+                );
                 break;
 
             //Return Random Yes or No
             case "quickpoll":
-                msg.reply(`${Math.random() >= 0.5? " Yes" : " No" }`);
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .addField(`✇ ${message.args.join(' ').toUpperCase()}`,`
+                        ➽ ${Math.random() >= 0.5? " Yes" : " No" }
+                    `)
+                );
                 break;
 
             //Return Random number between range given
             case "random":
-                msg.reply(`${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}`);
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .addField(`✇ Random Generated Number Between ${message.args[0]} and ${message.args[1]}:`,`
+                        ➽ ${(Math.floor(Math.random() * parseInt(message.args[1])) + parseInt(message.args[0]))}
+                    `)
+                );
                 break;
 
             //Delete [delNum] Messages in channel
@@ -75,28 +101,46 @@ client.on('message', async msg => {
 
             //Show Bot Information like Uptime/MemUsage/Servers/channels/users
             case 'botinfo':
-                msg.reply(`UpTime: ${moment.duration(client.uptime).format('d[d ]h[h ]m[m ]s[s]')}
-                Memory Usage: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
-                Joined This Server: ${msg.guild.joinedAt}
-                Servers: ${client.guilds.size}
-                Channels: ${client.channels.size}
-                Clients: ${client.users.size}`);
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .setThumbnail(client.avatarURL?client.avatarURL:msg.author.avatarURL)
+                    .addField('✇ Bot Informations:',`
+                        ➽ UpTime: ${moment.duration(client.uptime).format('d[d ]h[h ]m[m ]s[s]')}
+                        ➽ Memory Usage: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
+                        ➽ Servers: ${client.guilds.size}
+                        ➽ Channels: ${client.channels.size}
+                        ➽ Clients: ${client.users.size}
+                        ➽ Joined This Server In: ${msg.guild.joinedAt}
+                    `)
+                );
                 break;
-
+    
             //Shows info all about the server   
             case 'serverinfo':
-                msg.reply(`Server Name: ${msg.guild.name} 
-                Server ID: ${msg.guild.id} 
-                Server Verification Level: ${HUMAN_LEVELS[msg.guild.verificationLevel]}
-                Server Owner: ${msg.guild.owner}
-                Server Owner ID: ${msg.guild.ownerID}
-                Server Region: ${msg.guild.region}
-                Server Verification: ${msg.guild.verified}
-                Server Prefix: '${server_prefix}[command]' 
-                Server Members Count: ${msg.guild.members.size}
-                Server Text Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'text').size}
-                Server Voice Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'voice').size}
-                Server Creation Date: ${msg.guild.createdAt}`)
+                msg.channel.sendEmbed(new Discord.RichEmbed()
+                    .setColor('#2962ff')
+                    .setDescription(`${msg.author},`)
+                    .setThumbnail(msg.guild.iconURL?msg.guild.iconURL:msg.author.avatarURL)
+                    .addField('✇ About Server:',`
+                    ➽ Name: ${msg.guild.name}
+                    ➽ ID: ${msg.guild.id} 
+                    ➽ Server Verification Level: ${HUMAN_LEVELS[msg.guild.verificationLevel]}
+                    ➽ Server Region: ${msg.guild.region}
+                    ➽ Server Verification: ${msg.guild.verified}
+                    ➽ Server Prefix: '${server_prefix}[command]'
+                    `)
+                    .addField('✇ About Owner:',`
+                    ➽ Server Owner: ${msg.guild.owner}
+                    ➽ Server Owner ID: ${msg.guild.ownerID}
+                    `)
+                    .addField('✇ Server Stats:',`
+                    ➽ Server Members Count: ${msg.guild.members.size}
+                    ➽ Server Text Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'text').size}
+                    ➽ Server Voice Channels Count: ${msg.guild.channels.filter(ch => ch.type === 'voice').size}
+                    ➽ Server Creation Date: ${msg.guild.createdAt}
+                    `)
+                );
                 break;
 
             default:
@@ -116,7 +160,7 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
         //Add the server to the databse with default settings
         dataBase.ref('/servers/' + guild.id).set({
             name: guild.name,
-            prefix: '$'
+            prefix: DEFAULT_PREFIX
         });
     })
     .on('guildDelete', (guild) => { //When Bot get removed from a server
