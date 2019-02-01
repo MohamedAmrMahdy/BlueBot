@@ -44,6 +44,7 @@
 - [X] Add Server info command ( return all needed stats about the server )
 - [X] Re-Style Messages
 - [X] Add Help Command ( Shows all info about bot and commands )
+- [X] Move Commands into modules folders
 - [ ] Add Calculate command ( evaluates input )
 - *calc [Equation] ( return result )
 - [ ] Add Verify System ( gives a specific role to sender or auto give role to new members )
