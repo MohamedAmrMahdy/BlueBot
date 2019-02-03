@@ -1,4 +1,3 @@
-//Simple Command for Testing bot response
 module.exports = {
 	name: 'ping',
 	description: 'Used to Test for Bot Response Time and check it\'s availablity',

@@ -1,9 +1,8 @@
 const Discord = require('discord.js');
 
-//Return Random number between range given
 module.exports = {
 	name: 'random',
-	description: 'Ping!',
+	description: 'Return Random number between range given',
     args: true,
     argsFailMsg: 'Enter the lowest and highest expected number',
 	execute(client, msg, server_prefix, args) {

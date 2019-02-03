@@ -20,11 +20,15 @@
 |help| Used to get all commands menu with description and example| *help |
 |Ping| Used to Test for Bot Response Time and check it's availablity | *ping |
 |Prefix [New Prefix]| Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
+|ResetPrefix | Change Bot Prefix for your server (default prefix : " * " ) | *resetprefix |
 |Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
 |Random [X] [Y] | Get a random number between x and y | *random 1 100 |
 |Purge [X] | Delete X number of messages in the channel | *purge 20 |
 |Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
 |Serverinfo | Show Server Information like Name/owner and other stats about the server | *serverinfo |
+|Verify | Add Verified role to you | *verify |
+|EnableVerify [channel_ID] [Role_Name]| Enable Verify system to server | *enableverify 409847462826852372 Verify |
+|DisableVerify | Disable Verify system to server | *disableverify |
 
 
 # TODO List:
@@ -45,9 +49,7 @@
 - [X] Re-Style Messages
 - [X] Add Help Command ( Shows all info about bot and commands )
 - [X] Move Commands into modules folders
-- [ ] Add Calculate command ( evaluates input )
-- *calc [Equation] ( return result )
-- [ ] Add Verify System ( gives a specific role to sender or auto give role to new members )
+- [X] Add Verify System ( gives a specific role to sender or auto give role to new members )
 - [ ] Add Colors System ( change name's color by giving a specific role to sender )
 - [ ] Add Join/Leave System ( Sends a message to a channel when someone join or leave the server)
 - [ ] Add Privacy System ( can disable sending links or sending other server invite)
@@ -74,3 +76,5 @@
 - *time ( return the time in current song)
 - *seekto [X] ( moves to the X time in current song)
 - [ ] Add RP System ( Collect info about member and show stats about him / give rewards)
+- [ ] Add Calculate command ( evaluates input )
+- *calc [Equation] ( return result )

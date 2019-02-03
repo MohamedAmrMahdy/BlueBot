@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-//Return Random Yes or No
 module.exports = {
 	name: 'quickpoll',
 	description: 'Ask a question and get reply from our bot with yes or no',

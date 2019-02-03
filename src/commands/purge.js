@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-//Delete [delNum] Messages in channel
 module.exports = {
 	name: 'purge',
 	description: 'Delete X number of messages in the channel',

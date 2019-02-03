@@ -9,7 +9,6 @@ const HUMAN_LEVELS = ({
 	4: '[┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻] Must Have Verified Email & Registered on Discord for longer than 5 minutes & Member on this server for more than 10 minutes & verified phone'
 });
 
-//Shows info all about the server  
 module.exports = {
 	name: 'serverinfo',
 	description: 'Show Server Information like Name/owner and other stats about the server',

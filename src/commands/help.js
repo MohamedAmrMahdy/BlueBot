@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-//Help Command shows all details about commands
 module.exports = {
 	name: 'help',
 	description: 'Used to get all commands menu with description and example',
