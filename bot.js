@@ -64,6 +64,9 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
                     active : false,
                     channelID : "-1",
                     roleName : "-1"
+                },
+                colors:{
+                    active: false
                 }
             }
         }).then(()=>{

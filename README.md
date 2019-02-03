@@ -29,6 +29,10 @@
 |Verify | Add Verified role to you | *verify |
 |EnableVerify [channel_ID] [Role_Name]| Enable Verify system to server | *enableverify 409847462826852372 Verify |
 |DisableVerify | Disable Verify system to server | *disableverify |
+|Color [color_Name] | Assign color to you from server added colors | *color red|
+|Unassigncolor [color_Name] | Unassign color from you | *unassigncolor red|
+|addcolor [color_Name] [Role_Name]| Add Color to colors system | *addcolor red redish |
+|removecolor [color_Name] | Removes Color from colors system | *removecolor red |
 
 
 # TODO List:
@@ -50,9 +54,9 @@
 - [X] Add Help Command ( Shows all info about bot and commands )
 - [X] Move Commands into modules folders
 - [X] Add Verify System ( gives a specific role to sender or auto give role to new members )
-- [ ] Add Colors System ( change name's color by giving a specific role to sender )
-- [ ] Add Join/Leave System ( Sends a message to a channel when someone join or leave the server)
+- [X] Add Colors System ( change name's color by giving a specific role to sender )
 - [ ] Add Privacy System ( can disable sending links or sending other server invite)
+- [ ] Add Join/Leave System ( Sends a message to a channel when someone join or leave the server)
 - [ ] Add Youtube Search System ( return N top results from a search query )
 - [ ] Add SoundCloud Search System ( return N top results from a search query )
 - [ ] Add Spotify Search System ( return N top results from a search query )

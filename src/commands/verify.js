@@ -10,24 +10,32 @@ module.exports = {
         const verifyServerDB = client.serversDB[msg.guild.id].systems.verify;
 
         //check if the verify system enabled on server
-        if(!verifyServerDB.active){
-            msg.reply(`Not Enabled on this server use ${server_prefix}enableverify`);
-        }else{
-            //check for specific channel
-            if(verifyServerDB.channelID != msg.channel.id && verifyServerDB.channelID != "-1" ) return;
+        if(!verifyServerDB.active) return msg.reply(`Not Enabled on this server use ${server_prefix}enableverify`);
 
-            //check for already having the role
-            const role = msg.guild.roles.find(r => r.name === verifyServerDB.roleName);
-            if(msg.member.roles.some(role => role.name === verifyServerDB.roleName)) return msg.reply("You already have the role");
-            
-            //give role to message author
-            try{
-                msg.member.addRole(role).then(()=>{
-                    msg.reply("You have been Verified");
-                });
-            }catch(e){
-                msg.reply("Failed");
-            }
-        }
+        //check for specific channel
+        if(verifyServerDB.channelID != msg.channel.id && verifyServerDB.channelID != "-1" ) return;
+
+        //check for already having the role
+        const role = msg.guild.roles.find(r => r.name === verifyServerDB.roleName);
+        if(msg.member.roles.some(role => role.name === verifyServerDB.roleName)) return msg.reply("You already have the role");
+        
+        //get bot highest role pos
+        highestRolePos = -1;
+        msg.guild.me.roles.map((role)=>{if(role.position>highestRolePos)highestRolePos=role.position});
+
+        //check if bot role lower than the assigning role
+        if(highestRolePos<role.position) return msg.reply(`Cannot Assign role check bot have higher role than ${role.name} role`);
+
+        //check if bot has manage roles premission
+        if(!msg.guild.me.hasPermission('MANAGE_ROLES')) return msg.reply(`Cannot Assign role check for premission 'Manage Roles' given to bot`);
+                
+        //give role to message author
+        msg.member.addRole(role).then(()=>{
+            msg.react('👍');
+            msg.reply("You Have Been Verified");
+        }).catch((e)=>{
+            console.log(e);
+        });
+        
     },
 };
