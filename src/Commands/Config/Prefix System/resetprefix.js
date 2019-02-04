@@ -1,5 +1,5 @@
-let dataBase = require('../database/database');
-let dataBasef = require('../database/databasefunc');
+let dataBase = require('../../../database/database');
+let dataBasef = require('../../../database/databasefunc');
 const Discord = require('discord.js');
 
 module.exports = {

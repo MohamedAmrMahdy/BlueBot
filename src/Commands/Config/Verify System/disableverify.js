@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-let dataBase = require('../database/database');
-let dataBasef = require('../database/databasefunc');
+let dataBase = require('../../../database/database');
+let dataBasef = require('../../../database/databasefunc');
 
 module.exports = {
 	name: 'disableverify',

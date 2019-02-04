@@ -2,24 +2,41 @@ const fs = require('fs');
 const Discord = require('discord.js');
 let dataBase = require('./src/database/database');
 let dataBasef = require('./src/database/databasefunc');
+let antiAdsSys = require('./src/moderation/antiads');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+//Scan commands in the commands folder recrusively, require them and add them to collection
+function recrusiveCommandsRequire(folder){
+    fs.readdirSync(`${folder}`).forEach((file)=>{
+        //check if a javascript file
+        if(file.endsWith('.js')){
+            const command = require(`${folder}/${file}`);
+            client.commands.set(command.name, command);
+        //check if a directory
+        }else if (fs.lstatSync(folder + '/' +file).isDirectory()){
+            //send the directory to the function to scan
+            recrusiveCommandsRequire(folder + '/' +file);
+        }
+    })
+}
+
 //initialise the bot after getting offline data
 dataBasef.refreshServersDB(client).then(()=>{
-    // reading commands in the commands folder , require them and add them to collection
-    const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
-    for (const file of commandFiles) {
-        const command = require(`./src/commands/${file}`);
-        client.commands.set(command.name, command);
-    }
 
+    // reading commands in the commands folder recrusively, require them and add them to collection
+    recrusiveCommandsRequire('./src/Commands');
+    
     // Login Identity
     client.login(process.env.BOT_IDENTITY);
 })
 
 // Trigger New Message Sent
 client.on('message', msg => {
+
+    //Anti-Ads system
+    if(antiAdsSys.checkDiscordInvite(client, msg)) return;
+
     //Restructure the message
     const message = {
         prefix: msg.content[0],
@@ -66,6 +83,9 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
                     roleName : "-1"
                 },
                 colors:{
+                    active: false
+                },
+                antiads:{
                     active: false
                 }
             }
