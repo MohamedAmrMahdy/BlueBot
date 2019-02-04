@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 let dataBase = require('./src/database/database');
 let dataBasef = require('./src/database/databasefunc');
-let antiAdsSys = require('./src/moderation/antiads');
+let antiAdsSys = require('./src/Moderation/antiads');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
