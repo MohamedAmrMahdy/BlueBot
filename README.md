@@ -6,6 +6,7 @@
 ### General Commands
 
 **// - Fun Commands - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |help| Used to get all commands menu with description and example| *help |
@@ -14,6 +15,7 @@
 |Random [lower limit] [higher limit] | Get a random number between lower limit and higher limit | *random 1 100 |
 
 **// - Systems Commands - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |Verify | Add Verified role to you | *verify |
@@ -21,11 +23,13 @@
 |Unassigncolor [color_Name] | Unassign color from you | *unassigncolor red|
 
 **// - Moderation Commands - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |Purge [X] | Delete X number of messages in the channel | *purge 20 |
 
 **// - Information Commands - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
@@ -34,18 +38,21 @@
 ### Config Commands
 
 **// - Prefix System - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |Prefix [New Prefix]| Change Bot Prefix for your server (default prefix : " * " ) | *prefix ! |
 |ResetPrefix | Change Bot Prefix for your server (default prefix : " * " ) | *resetprefix |
 
 **// - Verify System - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |EnableVerify [channel_ID] [Role_Name]| Enable Verify system to server | *enableverify 409847462826852372 Verify |
 |DisableVerify | Disable Verify system to server | *disableverify |
 
 **// - Colors System - //**
+
 | Command | Description | Example |
 | ------ | ------ | ------ |
 |addcolor [color_Name] [Role_Name]| Add Color to colors system | *addcolor red redish |
