@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 let dataBase = require('./src/database/database');
 let dataBasef = require('./src/database/databasefunc');
 let antiAdsSys = require('./src/Moderation/antiads');
+let logs = require('./src/Moderation/logs');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -33,7 +34,12 @@ dataBasef.refreshServersDB(client).then(()=>{
 
 // Trigger New Message Sent
 client.on('message', msg => {
-
+    if (msg.content === '!join') {
+		client.emit('guildMemberAdd', msg.member || msg.guild.fetchMember(msg.author));
+    }
+    if (msg.content === '!leave') {
+		client.emit('guildMemberRemove', msg.member || msg.guild.fetchMember(msg.author));
+	}
     //Anti-Ads system
     if(antiAdsSys.checkDiscordInvite(client, msg)) return;
 
@@ -82,6 +88,10 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
                     channelID : "-1",
                     roleName : "-1"
                 },
+                logs:{
+                    active: false,
+                    channelID: "-1"
+                },
                 colors:{
                     active: false
                 },
@@ -105,10 +115,20 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
             dataBasef.refreshServersDB (client);
         });
     })
-    .on('guildMemberAdd', () => { //When someone join a server
+    .on('guildMemberAdd', (m) => { //When someone join a server
+        logs.joinedServer(client, m);
         client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
     })
-    .on('guildMemberRemove', () => { //When someone leave a server
+    .on('guildMemberRemove', (m) => { //When someone leave a server
+        logs.leftServer(client, m);
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+    })
+    .on('guildBanAdd', (g, u) => { //When someone leave a server
+        logs.leftServer(client, g, u);
+        client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
+    })
+    .on('guildBanRemove', (g, u) => { //When someone leave a server
+        logs.leftServer(client, g, u);
         client.user.setActivity(`with ${client.users.size} Users | ${client.guilds.size} Servers | ${client.channels.size} Channels`); 
     })
     .on('ready', () => {

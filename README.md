@@ -65,6 +65,13 @@
 |enableantiads | Enable AntiAds system to server | *enableantiads |
 |disableantiads | Disable AntiAds system from server | *disableantiads |
 
+**// - Logs System - //**
+
+| Command | Description | Example |
+| ------ | ------ | ------ |
+|enablelogs [channel_ID] | Enable logs system to server | *enablelogss 409847462826852372 |
+|disablelogs | Disable logs system from server | *disablelogs |
+
 # TODO List:
 - [x] Setup Project
 - [x] Setup Bot
@@ -86,7 +93,7 @@
 - [X] Add Verify System ( gives a specific role to sender or auto give role to new members )
 - [X] Add Colors System ( change name's color by giving a specific role to sender )
 - [X] Add AntiAds System ( detect discord invites and delete them )
-- [ ] Add Join/Leave System ( Sends a message to a channel when someone join or leave the server)
+- [X] Add Logs System ( Sends a message to a channel when someone join or leave the server / got banned)
 - [ ] Add Youtube Search System ( return N top results from a search query )
 - [ ] Add SoundCloud Search System ( return N top results from a search query )
 - [ ] Add Spotify Search System ( return N top results from a search query )
