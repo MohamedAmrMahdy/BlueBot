@@ -35,6 +35,13 @@
 |Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
 |Serverinfo | Show Server Information like Name/owner and other stats about the server | *serverinfo |
 
+**// - Search Commands - //**
+
+| Command | Description | Example |
+| ------ | ------ | ------ |
+|YTsearch | Search YouTube videos | *YTsearch alan walker |
+|SCsearch | Search SoundCloud Tracks | *SCsearch Daya Hide Away|
+
 ### Config Commands
 
 **// - Prefix System - //**
@@ -94,9 +101,8 @@
 - [X] Add Colors System ( change name's color by giving a specific role to sender )
 - [X] Add AntiAds System ( detect discord invites and delete them )
 - [X] Add Logs System ( Sends a message to a channel when someone join or leave the server / got banned)
-- [ ] Add Youtube Search System ( return N top results from a search query )
-- [ ] Add SoundCloud Search System ( return N top results from a search query )
-- [ ] Add Spotify Search System ( return N top results from a search query )
+- [X] Add Youtube Search Command ( return top results from a search query )
+- [X] Add SoundCloud Search Command ( return top results from a search query )
 - [ ] Add lyrics Command
 - [ ] Add Music Player System ( Queue of songs to play on voice channels )
 *play [search string / URL] ( Use Youtube Search System to choose from and then play the song )
