@@ -7,7 +7,7 @@ async function SearchYoutube (keywords){
     try {
         const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
             params: {
-                key: process.env.soundcloud_IDENTITY,
+                key: process.env.youtube_IDENTITY,
                 part: "snippet",
                 q: keywords,
                 type: "video",
