@@ -35,12 +35,6 @@ dataBasef.refreshServersDB(client).then(()=>{
 
 // Trigger New Message Sent
 client.on('message', msg => {
-    if (msg.content === '!join') {
-		client.emit('guildMemberAdd', msg.member || msg.guild.fetchMember(msg.author));
-    }
-    if (msg.content === '!leave') {
-		client.emit('guildMemberRemove', msg.member || msg.guild.fetchMember(msg.author));
-	}
     //Anti-Ads system
     if(antiAdsSys.checkDiscordInvite(client, msg)) return;
 
