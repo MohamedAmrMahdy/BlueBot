@@ -1,23 +1,25 @@
 # Welcome to BlueBot
 [![Dependencies Status](https://david-dm.org/MohamedAmrMahdy/BlueBot.svg)](https://david-dm.org/MohamedAmrMahdy/BlueBot) 
-A Multi-functional Disocrd Bot With Configurable Settings For Each Server, Made With 💖 and lots of ☕ 
+A Multi-functional Disocrd Bot With Configurable Settings For Each Server
+Made With 💖 and lots of ☕ 
 > **Note:** The Bot Still under development.
+
 ## General Commands
 
 | Command Type 	| Command	| Description | Example |
 | ------------- | --------- | ------ | ------ |
-|Fun 			|help		| Used to get all commands menu with description and example| *help |
-|Fun 			|Ping		| Used to Test for Bot Response Time and check it's availablity | *ping |
-|Fun 			|Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
-|Fun 			|Random [lower limit] [higher limit] | Get a random number between lower limit and higher limit | *random 1 100 |
+|Fun 			      |help		    | Used to get all commands menu with description and example| *help |
+|Fun 			      |Ping		| Used to Test for Bot Response Time and check it's availablity | *ping |
+|Fun 			      |Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
+|Fun 			      |Random [lower limit] [higher limit] | Get a random number between lower limit and higher limit | *random 1 100 |
 |Verify System 	|Verify | Add Verified role to you | *verify |
 |Color  System 	|Color [color_Name] | Assign color to you from server added colors | *color red|
 |Color  System 	|Unassigncolor [color_Name] | Unassign color from you | *unassigncolor red|
-|Moderation 	|Purge [X] | Delete X number of messages in the channel | *purge 20 |
-|Information 	|Botinfo | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
-|Information 	|Serverinfo | Show Server Information like Name/owner and other stats about the server | *serverinfo |
-|Search 		|YTsearch | Search YouTube videos | *YTsearch alan walker |
-|Search 		|SCsearch | Search SoundCloud Tracks | *SCsearch Daya Hide Away|
+|Moderation 	  |Purge [X]  | Delete X number of messages in the channel | *purge 20 |
+|Information 	  |Botinfo    | Show Bot Information like Uptime/MemUsage/Servers/channels/users | *botinfo |
+|Information 	  |Serverinfo | Show Server Information like Name/owner and other stats about the server | *serverinfo |
+|Search 		    |YTsearch   | Search YouTube videos | *YTsearch alan walker |
+|Search 		    |SCsearch   | Search SoundCloud Tracks | *SCsearch Daya Hide Away|
 
 ##  Config Commands
 | Command Type | Command | Description | Example |
@@ -57,21 +59,21 @@ A Multi-functional Disocrd Bot With Configurable Settings For Each Server, Made 
 - [ ] Add lyrics Command
 - [ ] Add Music Player System ( Queue of songs to play on voice channels )
 >*play [search string / URL] ( Use Youtube Search System to choose from and then play the song )
-*playlist [search string / URL] ( Use Youtube Search System to choose from and then play the song )
-*soundcloud [search string / URL] ( Use SoundCloud Search System to choose from and then play the song )
-*pause ( pause the music player )
-*resume ( resume the music player )
-*volume [N] ( adjust bot volume to N )
-*queue ( shows all the songs in the queue) 
-*stop ( clear queue and end music player)
-*skip ( move to the next song in queue)
-*remove [N] ( remove the N'th song in queue )
-*move [l] [z] ( moves the song in position l to position z in queue)
-*shuffle ( randomly shuffle the queue )
-*nowplaying ( send song's title to text channel )
-*repeat ( repeat queue without removing any song)
-*time ( return the time in current song)
-*seekto [l] ( moves to the l time in current song)
+>*playlist [search string / URL] ( Use Youtube Search System to choose from and then play the song )
+>*soundcloud [search string / URL] ( Use SoundCloud Search System to choose from and then play the song )
+>*pause ( pause the music player )
+>*resume ( resume the music player )
+>*volume [N] ( adjust bot volume to N )
+>*queue ( shows all the songs in the queue) 
+>*stop ( clear queue and end music player)
+>*skip ( move to the next song in queue)
+>*remove [N] ( remove the N'th song in queue )
+>*move [l] [z] ( moves the song in position l to position z in queue)
+>*shuffle ( randomly shuffle the queue )
+>*nowplaying ( send song's title to text channel )
+>*repeat ( repeat queue without removing any song)
+>*time ( return the time in current song)
+>*seekto [l] ( moves to the l time in current song)
 - [ ] Add RP System ( Collect info about member and show stats about him / give rewards)
 
 **License**: MIT
