@@ -1,7 +1,7 @@
 {
     "name": "blue-bot",
     "description": "A Discord Bot",
-    "version": "0.0.1",
+    "version": "0.8.0",
     "main": "bot.js",
     "scripts": {
         "start": "node bot.js"
@@ -9,8 +9,10 @@
     "dependencies": {
         "axios": "^0.18.0",
         "discord.js": "^11.4.2",
+        "dotenv": "^6.2.0",
         "firebase-admin": "^7.0.0",
         "moment": "^2.24.0",
-        "moment-duration-format": "^2.2.2"
+        "moment-duration-format": "^2.2.2",
+        "ytdl-core": "^0.29.1"
     }
 }
