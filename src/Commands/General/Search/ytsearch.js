@@ -1,25 +1,6 @@
 const Discord = require('discord.js');
-const request = require('request');
-const axios = require('axios');
-const MAX_RESULTS = 5;
+const { SearchYoutube } = require('../../../Axios/Search');
 
-async function SearchYoutube (keywords){
-    try {
-        const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-            params: {
-                key: process.env.youtube_IDENTITY,
-                part: "snippet",
-                q: keywords,
-                type: "video",
-                order: "relevance",
-                maxResults: MAX_RESULTS
-            }
-        })
-        return response.data.items;
-    } catch (error) {
-        console.error(error);
-    }
-};
 module.exports = {
 	name: 'ytsearch',
     description: 'Search YouTube videos',
