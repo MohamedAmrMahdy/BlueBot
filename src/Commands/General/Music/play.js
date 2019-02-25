@@ -1,9 +1,5 @@
 const Discord = require('discord.js');
 const yt = require('ytdl-core');
-const urlLib = require('url');
-const https = require('https');
-const search = require('youtube-search');
-const axios = require('axios');
 const { SearchYoutubePlaylist, SearchYoutube, SearchSoundCloud } = require('../../../Axios/Search');
 
 const regex = {
