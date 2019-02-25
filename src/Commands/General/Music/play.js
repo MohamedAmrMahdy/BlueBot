@@ -51,7 +51,7 @@ module.exports = {
 };
 
 function startPlaying(msg, oldmessage, connection) {
-	(function loopQueue(song) {
+	(async function loopQueue(song) {
 		if(!song) {
 			msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('Queue End Reached..');
@@ -64,13 +64,9 @@ function startPlaying(msg, oldmessage, connection) {
 			msg.edit(NewEmbed)
 		})
 		musicPlayerData[msg.guild.id].playing = true;
-		let dispatcher = msg.guild.voiceConnection.playStream(
-			yt(`http://www.youtube.com/watch?v=${song.trackID}`, { audioonly: true })
-			, { passes: process.env.youtube_IDENTITY , volume: 1});
+		musicPlayerData[msg.guild.id].dispatcher = await connection.playStream(yt(`http://www.youtube.com/watch?v=${song.trackID}`, { audioonly: true }), { passes: process.env.youtube_IDENTITY , volume: 0.4});
 
-		musicPlayerData[msg.guild.id].dispatcher = dispatcher
-		
-		msg.channel.fetchMessage(oldmessage.id).then(msg => {
+		msg.channel.fetchMessage(oldmessage.id).then(msg => {	
 			const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
 				.setTitle('🎶 Playing Music')
 				.setThumbnail(song.trackThumbnail)
