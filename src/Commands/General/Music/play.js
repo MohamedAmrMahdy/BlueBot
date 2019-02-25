@@ -64,10 +64,11 @@ function startPlaying(msg, oldmessage, connection) {
 			msg.edit(NewEmbed)
 		})
 		musicPlayerData[msg.guild.id].playing = true;
-		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
+		let dispatcher = msg.guild.voiceConnection.playStream(
 			yt(`http://www.youtube.com/watch?v=${song.trackID}`, { audioonly: true })
 			, { passes: process.env.youtube_IDENTITY , volume: 1});
 
+		musicPlayerData[msg.guild.id].dispatcher = dispatcher
 		
 		msg.channel.fetchMessage(oldmessage.id).then(msg => {
 			const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
