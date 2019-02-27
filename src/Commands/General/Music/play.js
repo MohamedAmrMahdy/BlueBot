@@ -61,7 +61,7 @@ module.exports = {
 function startPlaying(msg, oldmessage) {
 	if (!msg.guild.voiceConnection) return joinChannel(msg, oldmessage).then(() => startPlaying(msg, oldmessage));
 
-	(async function loopQueue(track) {
+	(function loopQueue(track) {
 		if (!track) {
 			msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🏁 Queue End Reached..');
@@ -75,7 +75,7 @@ function startPlaying(msg, oldmessage) {
 		})
 		musicPlayerData[msg.guild.id].playing = true;
 		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.play(
-			await ytdl(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
+			ytdl(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
 			, { passes: 3, volume: 1 });
 
 
