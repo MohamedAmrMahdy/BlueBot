@@ -7,6 +7,7 @@ let antiAdsSys = require('./src/Moderation/antiads');
 let logs = require('./src/Moderation/logs');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.musicPlayerData = [];
 
 //Scan commands in the commands folder recrusively, require them and add them to collection
 function recrusiveCommandsRequire(folder){

@@ -1,5 +1,6 @@
 module.exports = {
     checkDiscordInvite (client, msg){
+        if(!client.serversDB[msg.guild.id]) return;
         //get antiads settings for the server from the database
         const antiadsServerDB = client.serversDB[msg.guild.id].systems.antiads;
 

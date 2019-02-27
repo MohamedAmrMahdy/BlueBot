@@ -8,10 +8,8 @@ const regex = {
 	SOUNDCLOUD_LINK: /^https?:\/\/(soundcloud.com|snd.sc)\/(.*)$/
 }
 
-const emojiNumbers = ['0⃣', '1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '8⃣', '9⃣', '🔟'];
-
-const musicPlayerData = {};
-
+const emojiNumbers = ['0⃣', '1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '8⃣', '9⃣', '🔟'];	
+const DEFAULT_VOLUME = 0.4;
 //Show Bot Information like Uptime/MemUsage/Servers/channels/users
 module.exports = {
 	name: 'play',
@@ -30,17 +28,20 @@ module.exports = {
 		Search.then(results => {
 			console.log(results);
 			//[2]// Structure Phase
-			if (!musicPlayerData.hasOwnProperty(msg.guild.id)) {
-				musicPlayerData[msg.guild.id] = {};
-				musicPlayerData[msg.guild.id].status = "Idle";
-				musicPlayerData[msg.guild.id].playing = false;
-				musicPlayerData[msg.guild.id].queue = [];
+			if (!client.musicPlayerData.hasOwnProperty(msg.guild.id)) {
+				client.musicPlayerData[msg.guild.id] = {};
+				client.musicPlayerData[msg.guild.id].status = "Idle";
+				client.musicPlayerData[msg.guild.id].playing = false;
+				client.musicPlayerData[msg.guild.id].volume = DEFAULT_VOLUME;
+				client.musicPlayerData[msg.guild.id].muted = false;
+				client.musicPlayerData[msg.guild.id].currentTrackID = "";
+				client.musicPlayerData[msg.guild.id].queue = [];
 			}
-			for (track of results) musicPlayerData[msg.guild.id].queue.push(track);
+			for (track of results) client.musicPlayerData[msg.guild.id].queue.push(track);
 		}).catch(err => console.log(err)).then(() => {
 			//[3]// Stream Phase
-			if (!musicPlayerData[msg.guild.id].playing) {
-				startPlaying(msg, oldmessage);
+			if (!client.musicPlayerData[msg.guild.id].playing) {
+				startPlaying(client,msg, oldmessage);
 			} else {
 				msg.channel.fetchMessage(oldmessage.id).then(msg => {
 					const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🔂 Music Has Been Added To The Queue');
@@ -54,27 +55,30 @@ module.exports = {
 	},
 };
 
-function startPlaying(msg, oldmessage) {
-	if (!msg.guild.voiceConnection) return joinChannel(msg, oldmessage).then(() => startPlaying(msg, oldmessage));
-
+function startPlaying(client, msg, oldmessage) {
+	if (!msg.guild.voiceConnection) return joinChannel(msg, oldmessage).then(() => startPlaying(client, msg, oldmessage));
+	if (client.musicPlayerData[msg.guild.id].queue === undefined) return;
+	
 	(function loopQueue(track) {
 		if (!track) {
-			msg.channel.fetchMessage(oldmessage.id).then(msg => {
+			return msg.channel.fetchMessage(oldmessage.id).then(msg => {
+				if(client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)){
+					msg.guild.voiceConnection.disconnect();
+				}
+				client.musicPlayerData[msg.guild.id].playing = false;
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🏁 Queue End Reached..');
 				msg.edit(NewEmbed)
 			})
-			return;
 		}
 		msg.channel.fetchMessage(oldmessage.id).then(msg => {
 			const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🔄 Buffering..');
 			msg.edit(NewEmbed)
 		})
-		musicPlayerData[msg.guild.id].playing = true;
-		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
+		client.musicPlayerData[msg.guild.id].playing = true;
+		client.musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
 			yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
-			, { passes: 3, volume: 1 });
-
-
+			, { passes: 3, volume: DEFAULT_VOLUME });
+		client.musicPlayerData[msg.guild.id].currentTrackID = track.trackID;
 		msg.channel.fetchMessage(oldmessage.id).then(msg => {
 			const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
 			NewEmbed.fields = []
@@ -84,33 +88,33 @@ function startPlaying(msg, oldmessage) {
 				.addField("Track Author :", `${track.trackAuthor}`)
 				.addField("Track Requester :", `${track.requester}`,true)
 				.addField("Track URL :", `http://www.youtube.com/watch?v=${track.trackID}`)
-				.setFooter(`[▶️🔘${"▬".repeat((100 / 4))}][0/${track.trackDuration}]`)
+				.setFooter(`${client.musicPlayerData[msg.guild.id].playing?'▶️':'⏸️'}[🔘${"▬".repeat((100 / 4))}][0/${track.trackDuration}]${client.musicPlayerData[msg.guild.id].muted?'🔇':'🔊'}`)
 			msg.edit(NewEmbed)
 		})
 		let progressBar = setInterval(function () {
-			let precentage = parseInt(((musicPlayerData[msg.guild.id].dispatcher.time / 1000) / track.trackDuration) * 100);
+			let precentage = parseInt(((client.musicPlayerData[msg.guild.id].dispatcher.time / 1000) / track.trackDuration) * 100);
 
 			msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
-					.setFooter(`[▶️${"▬".repeat(precentage / 4)}🔘${"▬".repeat((100 - precentage) / 4)}][${musicPlayerData[msg.guild.id].dispatcher.time / 1000}/${track.trackDuration}]`)
+					.setFooter(`${client.musicPlayerData[msg.guild.id].playing?'▶️':'⏸️'}[${"▬".repeat(precentage / 4)}🔘${"▬".repeat((100 - precentage) / 4)}][${client.musicPlayerData[msg.guild.id].dispatcher.time / 1000}/${track.trackDuration}]${client.musicPlayerData[msg.guild.id].muted?'🔇':'🔊'}`)
 				msg.edit(NewEmbed)
 			})
 		}, 3000);
-		musicPlayerData[msg.guild.id].dispatcher.on('end', () => {
+		client.musicPlayerData[msg.guild.id].dispatcher.on('end', () => {
 			return msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🚧 Track End Reached, Buffering Next Track.. ');
 				msg.edit(NewEmbed)
-				musicPlayerData[msg.guild.id].playing = false;
+				client.musicPlayerData[msg.guild.id].playing = false;
 				clearInterval(progressBar);
-				loopQueue(musicPlayerData[msg.guild.id].queue.shift());
+				loopQueue(client.musicPlayerData[msg.guild.id].queue.shift());
 			})
 		});
-		musicPlayerData[msg.guild.id].dispatcher.on('error', (err) => {
+		client.musicPlayerData[msg.guild.id].dispatcher.on('error', (err) => {
 			return msg.channel.send(` 📛 ` + err).then(() => {
 				loopQueue(musicPlayerData[msg.guild.id].queue.shift());
 			});
 		});
-	})(musicPlayerData[msg.guild.id].queue.shift());
+	})(client.musicPlayerData[msg.guild.id].queue.shift());
 }
 function joinChannel(msg, oldmessage) {
 	return new Promise((resolve, reject) => {
