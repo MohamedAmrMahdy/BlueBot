@@ -22,6 +22,7 @@ module.exports = {
 		inputArg = args.join(" ");
 		const oldmessage = await msg.channel.send(new Discord.RichEmbed()
 			.setTitle('🤖 Checking for Youtube Video URL / Youtube Playlist URL / SoundCloud URL / Search keyword')
+			.setColor('#2962ff')
 		);
 
 		//[1]// Searching Phase
@@ -29,10 +30,6 @@ module.exports = {
 		Search.then(results => {
 			console.log(results);
 			//[2]// Structure Phase
-			msg.channel.fetchMessage(oldmessage.id).then(msg => {
-				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🔂 Adding Music To Queue');
-				msg.edit(NewEmbed)
-			})
 			if (!musicPlayerData.hasOwnProperty(msg.guild.id)) {
 				musicPlayerData[msg.guild.id] = {};
 				musicPlayerData[msg.guild.id].status = "Idle";
@@ -46,7 +43,7 @@ module.exports = {
 				startPlaying(msg, oldmessage);
 			} else {
 				msg.channel.fetchMessage(oldmessage.id).then(msg => {
-					const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('⏺️ Music Has Been Added To The Queue');
+					const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🔂 Music Has Been Added To The Queue');
 					NewEmbed.fields = []
 					msg.clearReactions()
 					return msg.edit(NewEmbed);
