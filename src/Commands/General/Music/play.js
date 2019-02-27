@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const yt = require('ytdl-core');
+const yt = require('ytdl-core-discord');
 const { SearchYoutubePlaylist, SearchYoutube, SearchSoundCloud } = require('../../../Axios/Search');
 
 const regex = {
@@ -47,6 +47,8 @@ module.exports = {
 			} else {
 				msg.channel.fetchMessage(oldmessage.id).then(msg => {
 					const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('⏺️ Music Has Been Added To The Queue');
+					NewEmbed.fields = []
+					msg.clearReactions()
 					return msg.edit(NewEmbed);
 				})
 			}
@@ -58,7 +60,7 @@ module.exports = {
 function startPlaying(msg, oldmessage) {
 	if (!msg.guild.voiceConnection) return joinChannel(msg, oldmessage).then(() => startPlaying(msg, oldmessage));
 
-	(function loopQueue(track) {
+	(async function loopQueue(track) {
 		if (!track) {
 			msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🏁 Queue End Reached..');
@@ -71,8 +73,8 @@ function startPlaying(msg, oldmessage) {
 			msg.edit(NewEmbed)
 		})
 		musicPlayerData[msg.guild.id].playing = true;
-		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
-			yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
+		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.play(
+			await yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
 			, { passes: 3, volume: 1 });
 
 
@@ -136,9 +138,9 @@ function joinChannel(msg, oldmessage) {
 	});
 }
 
-function getDurationYoutube(videoId) {
+async function getDurationYoutube(videoId) {
 	return new Promise(async function (resolve, reject) {
-		yt.getInfo(`http://www.youtube.com/watch?v=${videoId}`, (err, info) => {
+		await yt.getInfo(`http://www.youtube.com/watch?v=${videoId}`, (err, info) => {
 			if (err) throw err;
 			resolve(info.length_seconds);
 		});
