@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const ytdl = require('ytdl-core-discord');
 const yt = require('ytdl-core');
 const { SearchYoutubePlaylist, SearchYoutube, SearchSoundCloud } = require('../../../Axios/Search');
 
@@ -74,8 +73,8 @@ function startPlaying(msg, oldmessage) {
 			msg.edit(NewEmbed)
 		})
 		musicPlayerData[msg.guild.id].playing = true;
-		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.play(
-			ytdl(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
+		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
+			yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
 			, { passes: 3, volume: 1 });
 
 
