@@ -139,9 +139,9 @@ function joinChannel(msg, oldmessage) {
 	});
 }
 
-async function getDurationYoutube(videoId) {
+function getDurationYoutube(videoId) {
 	return new Promise(async function (resolve, reject) {
-		await yt.getInfo(`http://www.youtube.com/watch?v=${videoId}`, (err, info) => {
+		yt.getInfo(`http://www.youtube.com/watch?v=${videoId}`, (err, info) => {
 			if (err) throw err;
 			resolve(info.length_seconds);
 		});
