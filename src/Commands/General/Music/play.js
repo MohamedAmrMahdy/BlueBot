@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const yt = require('ytdl-core-discord');
+const ytdl = require('ytdl-core-discord');
+const yt = require('ytdl-core');
 const { SearchYoutubePlaylist, SearchYoutube, SearchSoundCloud } = require('../../../Axios/Search');
 
 const regex = {
@@ -74,7 +75,7 @@ function startPlaying(msg, oldmessage) {
 		})
 		musicPlayerData[msg.guild.id].playing = true;
 		musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.play(
-			await yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
+			await ytdl(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
 			, { passes: 3, volume: 1 });
 
 
