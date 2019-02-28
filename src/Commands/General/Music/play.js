@@ -55,6 +55,27 @@ module.exports = {
 	},
 };
 
+function timeFormat(time){
+	let timeForm = '';
+    var hrs = Math.floor(time / 3600);
+    var mins = Math.floor((time % 3600) / 60);
+	var secs = Math.floor(time % 60);
+
+	if (hrs > 0) timeForm += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    timeForm += "" + mins + ":" + (secs < 10 ? "0" : "");
+    timeForm += "" + secs;
+    return timeForm;
+}
+
+function musicBar(playing, muted, totalDuration, currentDuration, scale){
+	const pastTimeRep = Math.round((((currentDuration / 1000) / totalDuration) * 100)/scale);
+	const futureTimeRep = Math.round((((totalDuration - (currentDuration / 1000)) / totalDuration) * 100)/scale);
+	const progressBar = `${"▬".repeat((pastTimeRep))}🔘${"▬".repeat((futureTimeRep))}`
+	const musicState = playing?'▶️':'⏸️'
+	const muteState = muted?'🔇':'🔊'
+	const timeState = `${timeFormat(currentDuration/1000)}/${timeFormat(totalDuration)}`
+	return `${muteState}${musicState}﹝${progressBar}﹞ - 〘${timeState}〙 `
+}
 function startPlaying(client, msg, oldmessage) {
 	if (!msg.guild.voiceConnection) return joinChannel(msg, oldmessage).then(() => startPlaying(client, msg, oldmessage));
 	if (client.musicPlayerData[msg.guild.id].queue === undefined) return;
@@ -66,7 +87,8 @@ function startPlaying(client, msg, oldmessage) {
 					msg.guild.voiceConnection.disconnect();
 				}
 				client.musicPlayerData[msg.guild.id].playing = false;
-				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🏁 Queue End Reached..');
+				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🏁 Queue End Reached..').setFooter(' ');
+				NewEmbed.fields = []
 				msg.edit(NewEmbed)
 			})
 		}
@@ -88,18 +110,16 @@ function startPlaying(client, msg, oldmessage) {
 				.addField("Track Author :", `${track.trackAuthor}`)
 				.addField("Track Requester :", `${track.requester}`,true)
 				.addField("Track URL :", `http://www.youtube.com/watch?v=${track.trackID}`)
-				.setFooter(`${client.musicPlayerData[msg.guild.id].playing?'▶️':'⏸️'}[🔘${"▬".repeat((100 / 4))}][0/${track.trackDuration}]${client.musicPlayerData[msg.guild.id].muted?'🔇':'🔊'}`)
+				.setFooter(musicBar(client.musicPlayerData[msg.guild.id].playing, client.musicPlayerData[msg.guild.id].muted, track.trackDuration, client.musicPlayerData[msg.guild.id].dispatcher.time, 4))
 			msg.edit(NewEmbed)
 		})
 		let progressBar = setInterval(function () {
-			let precentage = parseInt(((client.musicPlayerData[msg.guild.id].dispatcher.time / 1000) / track.trackDuration) * 100);
-
 			msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
-					.setFooter(`${client.musicPlayerData[msg.guild.id].playing?'▶️':'⏸️'}[${"▬".repeat(precentage / 4)}🔘${"▬".repeat((100 - precentage) / 4)}][${client.musicPlayerData[msg.guild.id].dispatcher.time / 1000}/${track.trackDuration}]${client.musicPlayerData[msg.guild.id].muted?'🔇':'🔊'}`)
+					.setFooter(musicBar(client.musicPlayerData[msg.guild.id].playing, client.musicPlayerData[msg.guild.id].muted, track.trackDuration, client.musicPlayerData[msg.guild.id].dispatcher.time, 4))
 				msg.edit(NewEmbed)
 			})
-		}, 3000);
+		}, 5000);
 		client.musicPlayerData[msg.guild.id].dispatcher.on('end', () => {
 			return msg.channel.fetchMessage(oldmessage.id).then(msg => {
 				const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle('🚧 Track End Reached, Buffering Next Track.. ');
