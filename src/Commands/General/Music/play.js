@@ -98,7 +98,7 @@ function startPlaying(client, msg, oldmessage) {
 		})
 		client.musicPlayerData[msg.guild.id].playing = true;
 		client.musicPlayerData[msg.guild.id].dispatcher = msg.guild.voiceConnection.playStream(
-			yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true })
+			yt(`http://www.youtube.com/watch?v=${track.trackID}`, { audioonly: true ,highWaterMark: 1<<25})
 			, { passes: 3, volume: DEFAULT_VOLUME });
 		client.musicPlayerData[msg.guild.id].currentTrackID = track.trackID;
 		msg.channel.fetchMessage(oldmessage.id).then(msg => {
