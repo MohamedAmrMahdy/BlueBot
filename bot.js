@@ -133,6 +133,7 @@ client.on('guildCreate', (guild) => { //When Bot joined a server
     })
     .on('disconnect', () => console.warn("Bot is disconnecting..."))
     .on('reconnecting', () => console.log("Bot reconnecting..."))
+    .on('rateLimit', (rateLimitInfo) => console.info(rateLimitInfo))
     .on('error', (e) => console.error(e))
     .on('warn', (e) => console.warn(e))
     .on('debug', (e) => console.info(e));
