@@ -53,7 +53,7 @@ client.on('message', msg => {
     console.log(message);
 
     //Check if command exist
-    if (!client.commands.has(message.command)) return msg.reply("Not A Registered Command");
+    if (!client.commands.has(message.command)) return;
 
     //return command from commands stored
     const command = client.commands.get(message.command);
