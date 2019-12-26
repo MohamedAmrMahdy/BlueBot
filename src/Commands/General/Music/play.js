@@ -29,6 +29,7 @@ const DEFAULT_VOLUME = 0.4;
 //Show Bot Information like Uptime/MemUsage/Servers/channels/users
 module.exports = {
   name: "play",
+  aliases: ["play","p"],
   description: "Initiate Music Player and play Track",
   args: true,
   argsFailMsg:
@@ -74,7 +75,9 @@ function SendMessageAsAddedToQueue(msg, oldmessage) {
 }
 
 function AddResultsToQueue(results, client, msg) {
-  for (track of results) client.musicPlayerData[msg.guild.id].queue.push(track);
+  for (track of results) {
+    client.musicPlayerData[msg.guild.id].queue.push(track)
+  };
 }
 
 function InitialaiseMusicPlayer(client, msg) {
@@ -124,15 +127,16 @@ function StartPlaying(client, msg, oldmessage) {
   if (client.musicPlayerData[msg.guild.id].queue === undefined) return;
 
   (function loopQueue(track) {
-    if (!track) {
+    if (track === undefined) {
       QueueEndReached(msg, oldmessage, client);
+    }else{
+      ShowBufferingState(msg, oldmessage);
+      StartStream(client, msg, track);
+      ShowCurrentTrackDetails(msg, oldmessage, track, client);
+      let progressBar = ShowProgressBar(msg, oldmessage, client, track);
+      TrackEndReached(client, msg, oldmessage, progressBar, loopQueue);
+      TrackGotError(client, msg, loopQueue);
     }
-    ShowBufferingState(msg, oldmessage);
-    StartStream(client, msg, track);
-    ShowCurrentTrackDetails(msg, oldmessage, track, client);
-    let progressBar = ShowProgressBar(msg, oldmessage, client, track);
-    TrackEndReached(client, msg, oldmessage, progressBar, loopQueue);
-    TrackGotError(client, msg, loopQueue);
   })(client.musicPlayerData[msg.guild.id].queue.shift());
 }
 function TrackGotError(client, msg, loopQueue) {
@@ -278,6 +282,16 @@ function getDurationYoutube(videoId) {
   });
 }
 
+function sleep(ms){
+  return new Promise(resolve=>{
+      setTimeout(resolve,ms)
+  })
+}
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 function SeachPhase(msg, inputArg, oldmessage) {
   return new Promise(async function(resolve, reject) {
     let searchResults = [];
@@ -294,9 +308,8 @@ function SeachPhase(msg, inputArg, oldmessage) {
       let results = await SearchYoutubePlaylist(playlistID).catch(err => {
         console.log(err);
       });
-
       for (const video of results) {
-        getDurationYoutube(video.snippet.resourceId.videoId).then(dur => {
+        let waitthis = await getDurationYoutube(video.snippet.resourceId.videoId).then(async dur => {
           searchResults.push({
             title: video.snippet.title,
             description: video.snippet.description,
@@ -306,9 +319,10 @@ function SeachPhase(msg, inputArg, oldmessage) {
             trackDuration: dur,
             requester: msg.member
           });
-          resolve(searchResults);
+         // await sleep(getRandomArbitrary(1000,2000))
         });
       }
+      resolve(searchResults);
     } else if (inputArg.match(regex.YOUTUBE_VIDEO)) {
       msg.channel.fetchMessage(oldmessage.id).then(msg => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
@@ -364,11 +378,11 @@ function SeachPhase(msg, inputArg, oldmessage) {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           `🔢 Choose a Result Number to play`
         );
-        message.edit(NewEmbed).then(newerMessage => {
-          for (let i = 0; i < results.length; i++)
-            setTimeout(function() {
-              newerMessage.react(emojiNumbers[i + 1]);
-            }, 1000);
+        message.edit(NewEmbed).then(async newerMessage => {
+          for (let i = 0; i < results.length; i++){
+            await sleep(getRandomArbitrary(1000,1500))
+            newerMessage.react(emojiNumbers[i + 1]);
+          }
           const filter = (reaction, user) => {
             return (
               emojiNumbers.includes(reaction.emoji.name) &&
