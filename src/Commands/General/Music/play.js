@@ -271,7 +271,7 @@ function joinChannel(msg, oldmessage) {
 
 function getDurationYoutube(videoId) {
   return new Promise(async function(resolve, reject) {
-    yt.getInfo(`http://www.youtube.com/watch?v=${videoId}`, (err, info) => {
+    yt.getInfo(videoId, (err, info) => {
       if (err) throw err;
       resolve(info.length_seconds);
     });
@@ -366,7 +366,9 @@ function SeachPhase(msg, inputArg, oldmessage) {
         );
         message.edit(NewEmbed).then(newerMessage => {
           for (let i = 0; i < results.length; i++)
-            newerMessage.react(emojiNumbers[i + 1]);
+            setTimeout(function() {
+              newerMessage.react(emojiNumbers[i + 1]);
+            }, 1000);
           const filter = (reaction, user) => {
             return (
               emojiNumbers.includes(reaction.emoji.name) &&
