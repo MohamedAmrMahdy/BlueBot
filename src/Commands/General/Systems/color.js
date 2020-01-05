@@ -26,7 +26,7 @@ module.exports = {
 
         //check for already having the role
         if(msg.member.roles.some(role => role.name === colorServerDB.colorsStored[colorname])) return msg.reply("You already have the role");
-        
+
         //get bot highest role pos
         highestRolePos = -1;
         msg.guild.me.roles.map((role)=>{if(role.position>highestRolePos)highestRolePos=role.position});
@@ -36,7 +36,7 @@ module.exports = {
 
         //check if bot has manage roles premission
         if(!msg.guild.me.hasPermission('MANAGE_ROLES')) return msg.reply(`Cannot Assign role check for premission 'Manage Roles' given to bot`);
-        
+
         //give role to message author
         msg.member.addRole(role).then(()=>{
             msg.react('👍');
@@ -44,6 +44,6 @@ module.exports = {
         }).catch((e)=>{
             console.log(e);
         });
-        
+
     },
 };

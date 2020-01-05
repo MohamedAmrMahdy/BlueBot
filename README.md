@@ -8,8 +8,9 @@ Made With 💖 and lots of ☕
 
 | Command Type 	| Command	| Description | Example |
 | ------------- | --------- | ------ | ------ |
-|Fun 			      |help		    | Used to get all commands menu with description and example| *help |
+|Fun 			      |Help		    | Used to get all commands menu with description and example| *help |
 |Fun 			      |Ping		| Used to Test for Bot Response Time and check it's availablity | *ping |
+|Fun 			      |React		| Used to send a message with reaction / useful with nitro reacts | *react [react_name] |
 |Fun 			      |Quickpoll [Question]| Ask a question and get reply from our bot with yes or no| *Quickpoll Are you feeling cold ? |
 |Fun 			      |Random [lower limit] [higher limit] | Get a random number between lower limit and higher limit | *random 1 100 |
 |Verify System 	|Verify | Add Verified role to you | *verify |
@@ -41,9 +42,10 @@ Made With 💖 and lots of ☕
 - [x] Connect to Database
 - [x] Make Configurable Prefix
 - [X] Add Ping Command
-- [x] Add Quickpoll command 
-- [x] Add Random command 
-- [X] Add Purge command 
+- [x] Add Quickpoll command
+- [x] Add Random command
+- [x] Add React command
+- [X] Add Purge command
 - [X] Show Number of servers the bot existed in with the number of clients served and channels
 - [X] Add Show Bot Information Command
 - [X] Add Server info command ( return all needed stats about the server )
@@ -66,7 +68,7 @@ Made With 💖 and lots of ☕
 - [X] Add Volume Control to Music Player *volume [N] ( adjust bot volume to N )
 - [X] Add Stop to Stop Music Player *stop ( clear queue and end music player)
 - [X] Add Skip to skip music in Music Player *skip ( move to the next song in queue)
-- [ ] Add Queue to show queue to Music Player *queue ( shows all the songs in the queue) 
+- [X] Add Queue to show queue to Music Player *queue ( shows all the songs in the queue)
 - [ ] Add Remove to remove track from Music Player *remove [N] ( remove the N'th song in queue )
 - [ ] Add Move to move music in queue Music Player *move [l] [z] ( moves the song in position l to position z in queue)
 - [ ] Add Shuffle to shuffle Music Player tracks *shuffle ( randomly shuffle the queue )

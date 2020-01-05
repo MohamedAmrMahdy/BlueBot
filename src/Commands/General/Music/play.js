@@ -356,7 +356,7 @@ function SeachPhase(msg, inputArg, oldmessage) {
     } else {
       msg.channel.fetchMessage(oldmessage.id).then(msg => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
-          `🔍 Searching for " ${inputArg} " in youtube`
+          `🔢 Choose a Result Number to play`
         );
         msg.edit(NewEmbed);
       });
@@ -364,24 +364,25 @@ function SeachPhase(msg, inputArg, oldmessage) {
       let results = await SearchYoutube(inputArg).catch(err => {
         console.log(err);
       });
-      for (let i = 0; i < results.length; i++) {
-        msg.channel.fetchMessage(oldmessage.id).then(msg => {
-          const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).addField(
+      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+        const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
+        for (let i = 0; i < results.length; i++) {
+          NewEmbed.addField(
             `[${i + 1}] - ${results[i].snippet.channelTitle}`,
             `${results[i].snippet.title}`
           );
-          msg.edit(NewEmbed);
-        });
-      }
+        }
+        msg.edit(NewEmbed);
+      });
 
-      msg.channel.fetchMessage(oldmessage.id).then(message => {
-        const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
-          `🔢 Choose a Result Number to play`
-        );
-        message.edit(NewEmbed).then(async newerMessage => {
+      msg.channel.fetchMessage(oldmessage.id).then(async message => {
+        //const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
+        //  `🔢 Choose a Result Number to play`
+        //);
+        //message.edit(NewEmbed).then(async newerMessage => {
           for (let i = 0; i < results.length; i++){
-            await sleep(getRandomArbitrary(1000,1500))
-            newerMessage.react(emojiNumbers[i + 1]);
+            await message.react(emojiNumbers[i + 1]);
+            await sleep(getRandomArbitrary(1000,2000))
           }
           const filter = (reaction, user) => {
             return (
@@ -390,14 +391,14 @@ function SeachPhase(msg, inputArg, oldmessage) {
             );
           };
 
-          newerMessage
+          message
             .awaitReactions(filter, { max: 1, time: 60000, errors: ["time"] })
             .then(collected => {
               const reaction = collected.first();
               const number_collected = emojiNumbers.findIndex(element => {
                 return element === reaction.emoji.name;
               });
-              newerMessage.clearReactions();
+              message.clearReactions();
 
               msg.channel.fetchMessage(oldmessage.id).then(msg => {
                 const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
@@ -433,7 +434,7 @@ function SeachPhase(msg, inputArg, oldmessage) {
               });
               reject();
             });
-        });
+        //});
       });
     }
   });
