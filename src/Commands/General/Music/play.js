@@ -3,13 +3,13 @@ const yt = require("ytdl-core");
 const {
   SearchYoutubePlaylist,
   SearchYoutube,
-  SearchSoundCloud
+  SearchSoundCloud,
 } = require("../../../Axios/Search");
 
 const regex = {
   YOUTUBE_VIDEO: /(?:https?:\/\/)?(?:www\.)?(youtube.com|youtu.be)/,
   YOUTUBE_PLAYLIST: /^.*(youtu.be\/|list=)([^#\&\?]*).*/,
-  SOUNDCLOUD_LINK: /^https?:\/\/(soundcloud.com|snd.sc)\/(.*)$/
+  SOUNDCLOUD_LINK: /^https?:\/\/(soundcloud.com|snd.sc)\/(.*)$/,
 };
 
 const emojiNumbers = [
@@ -23,13 +23,13 @@ const emojiNumbers = [
   "7⃣",
   "8⃣",
   "9⃣",
-  "🔟"
+  "🔟",
 ];
 const DEFAULT_VOLUME = 0.4;
 //Show Bot Information like Uptime/MemUsage/Servers/channels/users
 module.exports = {
   name: "play",
-  aliases: ["play","p"],
+  aliases: ["play", "p"],
   description: "Initiate Music Player and play Track",
   args: true,
   argsFailMsg:
@@ -45,14 +45,14 @@ module.exports = {
     );
 
     //[1]// Searching Phase
-    const Search = SeachPhase(msg, inputArg, musicPlayerMessage);
-    Search.then(results => {
-      if (!client.musicPlayerData.hasOwnProperty(msg.guild.id)) {
-        InitialaiseMusicPlayer(client, msg);
-      }
-      AddResultsToQueue(results, client, msg);
-    })
-      .catch(err => console.log(err))
+    SeachPhase(msg, inputArg, musicPlayerMessage)
+      .then((results) => {
+        if (!client.musicPlayerData.hasOwnProperty(msg.guild.id)) {
+          InitialaiseMusicPlayer(client, msg);
+        }
+        AddResultsToQueue(results, client, msg);
+      })
+      .catch((err) => console.log(err))
       .then(() => {
         if (!client.musicPlayerData[msg.guild.id].playing) {
           StartPlaying(client, msg, musicPlayerMessage);
@@ -60,11 +60,11 @@ module.exports = {
           SendMessageAsAddedToQueue(msg, musicPlayerMessage);
         }
       });
-  }
+  },
 };
 
 function SendMessageAsAddedToQueue(msg, oldmessage) {
-  msg.channel.fetchMessage(oldmessage.id).then(msg => {
+  msg.channel.fetchMessage(oldmessage.id).then((msg) => {
     const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
       "🔂 Music Has Been Added To The Queue"
     );
@@ -76,8 +76,8 @@ function SendMessageAsAddedToQueue(msg, oldmessage) {
 
 function AddResultsToQueue(results, client, msg) {
   for (track of results) {
-    client.musicPlayerData[msg.guild.id].queue.push(track)
-  };
+    client.musicPlayerData[msg.guild.id].queue.push(track);
+  }
 }
 
 function InitialaiseMusicPlayer(client, msg) {
@@ -129,7 +129,7 @@ function StartPlaying(client, msg, oldmessage) {
   (function loopQueue(track) {
     if (track === undefined) {
       QueueEndReached(msg, oldmessage, client);
-    }else{
+    } else {
       ShowBufferingState(msg, oldmessage);
       StartStream(client, msg, track);
       ShowCurrentTrackDetails(msg, oldmessage, track, client);
@@ -140,7 +140,7 @@ function StartPlaying(client, msg, oldmessage) {
   })(client.musicPlayerData[msg.guild.id].queue.shift());
 }
 function TrackGotError(client, msg, loopQueue) {
-  client.musicPlayerData[msg.guild.id].dispatcher.on("error", err => {
+  client.musicPlayerData[msg.guild.id].dispatcher.on("error", (err) => {
     return msg.channel.send(` 📛 ` + err).then(() => {
       loopQueue(musicPlayerData[msg.guild.id].queue.shift());
     });
@@ -149,7 +149,7 @@ function TrackGotError(client, msg, loopQueue) {
 
 function TrackEndReached(client, msg, oldmessage, progressBar, loopQueue) {
   client.musicPlayerData[msg.guild.id].dispatcher.on("end", () => {
-    return msg.channel.fetchMessage(oldmessage.id).then(msg => {
+    return msg.channel.fetchMessage(oldmessage.id).then((msg) => {
       const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
         "🚧 Track End Reached, Buffering Next Track.. "
       );
@@ -162,8 +162,8 @@ function TrackEndReached(client, msg, oldmessage, progressBar, loopQueue) {
 }
 
 function ShowProgressBar(msg, oldmessage, client, track) {
-  return setInterval(function() {
-    msg.channel.fetchMessage(oldmessage.id).then(msg => {
+  return setInterval(function () {
+    msg.channel.fetchMessage(oldmessage.id).then((msg) => {
       const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setFooter(
         musicBar(
           client.musicPlayerData[msg.guild.id].playing,
@@ -179,7 +179,7 @@ function ShowProgressBar(msg, oldmessage, client, track) {
 }
 
 function ShowCurrentTrackDetails(msg, oldmessage, track, client) {
-  msg.channel.fetchMessage(oldmessage.id).then(msg => {
+  msg.channel.fetchMessage(oldmessage.id).then((msg) => {
     const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
     NewEmbed.fields = [];
     NewEmbed.setTitle("🎶 Playing Music")
@@ -210,7 +210,7 @@ function StartStream(client, msg, track) {
   ].dispatcher = msg.guild.voiceConnection.playStream(
     yt(`http://www.youtube.com/watch?v=${track.trackID}`, {
       audioonly: true,
-      highWaterMark: 1 << 25
+      highWaterMark: 1 << 25,
     }),
     { passes: 3, volume: DEFAULT_VOLUME }
   );
@@ -219,7 +219,7 @@ function StartStream(client, msg, track) {
 }
 
 function ShowBufferingState(msg, oldmessage) {
-  msg.channel.fetchMessage(oldmessage.id).then(msg => {
+  msg.channel.fetchMessage(oldmessage.id).then((msg) => {
     const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
       "🔄 Buffering.."
     );
@@ -228,9 +228,11 @@ function ShowBufferingState(msg, oldmessage) {
 }
 
 function QueueEndReached(msg, oldmessage, client) {
-  msg.channel.fetchMessage(oldmessage.id).then(msg => {
+  msg.channel.fetchMessage(oldmessage.id).then((msg) => {
     if (
-      client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)
+      client.voiceConnections.find(
+        (val) => val.channel.guild.id == msg.guild.id
+      )
     ) {
       msg.guild.voiceConnection.disconnect();
     }
@@ -245,7 +247,7 @@ function QueueEndReached(msg, oldmessage, client) {
 
 function joinChannel(msg, oldmessage) {
   return new Promise((resolve, reject) => {
-    msg.channel.fetchMessage(oldmessage.id).then(msg => {
+    msg.channel.fetchMessage(oldmessage.id).then((msg) => {
       const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
         "🚶 Joining Room"
       );
@@ -258,7 +260,7 @@ function joinChannel(msg, oldmessage) {
       voiceChannel = client.channels.get(VOICE_CHANNEL);
     }
     if (!voiceChannel || voiceChannel.type !== "voice") {
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           "❗ You need to join a voice channel first! Please Try Again"
         );
@@ -268,24 +270,25 @@ function joinChannel(msg, oldmessage) {
     }
     voiceChannel
       .join()
-      .then(connection => resolve(connection))
-      .catch(err => reject(err));
+      .then((connection) => resolve(connection))
+      .catch((err) => reject(err));
   });
 }
 
 function getDurationYoutube(videoId) {
-  return new Promise(async function(resolve, reject) {
-    yt.getInfo(videoId, (err, info) => {
-      if (err) throw err;
-      resolve(info.length_seconds);
-    });
+  return new Promise(async function (resolve, reject) {
+    yt.getBasicInfo(videoId)
+      .then((info) => {
+        resolve(Number(info.videoDetails.lengthSeconds));
+      })
+      .catch((err) => reject(err));
   });
 }
 
-function sleep(ms){
-  return new Promise(resolve=>{
-      setTimeout(resolve,ms)
-  })
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function getRandomArbitrary(min, max) {
@@ -293,11 +296,11 @@ function getRandomArbitrary(min, max) {
 }
 
 function SeachPhase(msg, inputArg, oldmessage) {
-  return new Promise(async function(resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     let searchResults = [];
 
     if (inputArg.match(regex.YOUTUBE_PLAYLIST)) {
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           "🗃️ Collecting data from tracks in playlist"
         );
@@ -305,11 +308,13 @@ function SeachPhase(msg, inputArg, oldmessage) {
       });
 
       let playlistID = inputArg.match(regex.YOUTUBE_PLAYLIST)[2];
-      let results = await SearchYoutubePlaylist(playlistID).catch(err => {
+      let results = await SearchYoutubePlaylist(playlistID).catch((err) => {
         console.log(err);
       });
       for (const video of results) {
-        let waitthis = await getDurationYoutube(video.snippet.resourceId.videoId).then(async dur => {
+        let waitthis = await getDurationYoutube(
+          video.snippet.resourceId.videoId
+        ).then(async (dur) => {
           searchResults.push({
             title: video.snippet.title,
             description: video.snippet.description,
@@ -317,24 +322,24 @@ function SeachPhase(msg, inputArg, oldmessage) {
             trackThumbnail: video.snippet.thumbnails.high.url,
             trackID: video.snippet.resourceId.videoId,
             trackDuration: dur,
-            requester: msg.member
+            requester: msg.member,
           });
-         // await sleep(getRandomArbitrary(1000,2000))
+          // await sleep(getRandomArbitrary(1000,2000))
         });
       }
       resolve(searchResults);
     } else if (inputArg.match(regex.YOUTUBE_VIDEO)) {
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           "🗃️ Collecting data from Youtube Video"
         );
         msg.edit(NewEmbed);
       });
 
-      let results = await SearchYoutube(inputArg).catch(err => {
+      let results = await SearchYoutube(inputArg).catch((err) => {
         console.log(err);
       });
-      getDurationYoutube(results[0].id.videoId).then(dur => {
+      getDurationYoutube(results[0].id.videoId).then((dur) => {
         searchResults.push({
           title: results[0].snippet.title,
           description: results[0].snippet.description,
@@ -342,30 +347,30 @@ function SeachPhase(msg, inputArg, oldmessage) {
           trackThumbnail: results[0].snippet.thumbnails.high.url,
           trackID: results[0].id.videoId,
           trackDuration: dur,
-          requester: msg.member
+          requester: msg.member,
         });
         resolve(searchResults);
       });
     } else if (inputArg.match(regex.SOUNDCLOUD_LINK)) {
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           "🗃️ Collecting data from Video"
         );
         msg.edit(NewEmbed);
       });
     } else {
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
         const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
           `🔢 Choose a Result Number to play`
         );
         msg.edit(NewEmbed);
       });
 
-      let results = await SearchYoutube(inputArg).catch(err => {
+      let results = await SearchYoutube(inputArg).catch((err) => {
         console.log(err);
       });
-      msg.channel.fetchMessage(oldmessage.id).then(msg => {
-        const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0])
+      msg.channel.fetchMessage(oldmessage.id).then((msg) => {
+        const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
         for (let i = 0; i < results.length; i++) {
           NewEmbed.addField(
             `[${i + 1}] - ${results[i].snippet.channelTitle}`,
@@ -375,65 +380,65 @@ function SeachPhase(msg, inputArg, oldmessage) {
         msg.edit(NewEmbed);
       });
 
-      msg.channel.fetchMessage(oldmessage.id).then(async message => {
+      msg.channel.fetchMessage(oldmessage.id).then(async (message) => {
         //const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]).setTitle(
         //  `🔢 Choose a Result Number to play`
         //);
         //message.edit(NewEmbed).then(async newerMessage => {
-          for (let i = 0; i < results.length; i++){
-            await message.react(emojiNumbers[i + 1]);
-            await sleep(getRandomArbitrary(1000,2000))
-          }
-          const filter = (reaction, user) => {
-            return (
-              emojiNumbers.includes(reaction.emoji.name) &&
-              user.id === msg.author.id
-            );
-          };
+        for (let i = 0; i < results.length; i++) {
+          await message.react(emojiNumbers[i + 1]);
+          await sleep(getRandomArbitrary(1000, 2000));
+        }
+        const filter = (reaction, user) => {
+          return (
+            emojiNumbers.includes(reaction.emoji.name) &&
+            user.id === msg.author.id
+          );
+        };
 
-          message
-            .awaitReactions(filter, { max: 1, time: 60000, errors: ["time"] })
-            .then(collected => {
-              const reaction = collected.first();
-              const number_collected = emojiNumbers.findIndex(element => {
-                return element === reaction.emoji.name;
-              });
-              message.clearReactions();
-
-              msg.channel.fetchMessage(oldmessage.id).then(msg => {
-                const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
-                NewEmbed.fields = [];
-                msg.edit(NewEmbed);
-              });
-
-              getDurationYoutube(results[number_collected - 1].id.videoId).then(
-                dur => {
-                  searchResults.push({
-                    title: results[number_collected - 1].snippet.title,
-                    description:
-                      results[number_collected - 1].snippet.description,
-                    trackAuthor:
-                      results[number_collected - 1].snippet.channelTitle,
-                    trackThumbnail:
-                      results[number_collected - 1].snippet.thumbnails.high.url,
-                    trackID: results[number_collected - 1].id.videoId,
-                    trackDuration: dur,
-                    requester: msg.member
-                  });
-                  resolve(searchResults);
-                }
-              );
-            })
-            .catch(collected => {
-              msg.channel.fetchMessage(oldmessage.id).then(msg => {
-                const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
-                NewEmbed.fields = [];
-                NewEmbed.setTitle(`🤷 No Reply Recieved from Requester`);
-                msg.clearReactions();
-                msg.edit(NewEmbed);
-              });
-              reject();
+        message
+          .awaitReactions(filter, { max: 1, time: 60000, errors: ["time"] })
+          .then((collected) => {
+            const reaction = collected.first();
+            const number_collected = emojiNumbers.findIndex((element) => {
+              return element === reaction.emoji.name;
             });
+            message.clearReactions();
+
+            msg.channel.fetchMessage(oldmessage.id).then((msg) => {
+              const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
+              NewEmbed.fields = [];
+              msg.edit(NewEmbed);
+            });
+
+            getDurationYoutube(results[number_collected - 1].id.videoId).then(
+              (dur) => {
+                searchResults.push({
+                  title: results[number_collected - 1].snippet.title,
+                  description:
+                    results[number_collected - 1].snippet.description,
+                  trackAuthor:
+                    results[number_collected - 1].snippet.channelTitle,
+                  trackThumbnail:
+                    results[number_collected - 1].snippet.thumbnails.high.url,
+                  trackID: results[number_collected - 1].id.videoId,
+                  trackDuration: dur,
+                  requester: msg.member,
+                });
+                resolve(searchResults);
+              }
+            );
+          })
+          .catch((collected) => {
+            msg.channel.fetchMessage(oldmessage.id).then((msg) => {
+              const NewEmbed = new Discord.RichEmbed(oldmessage.embeds[0]);
+              NewEmbed.fields = [];
+              NewEmbed.setTitle(`🤷 No Reply Recieved from Requester`);
+              msg.clearReactions();
+              msg.edit(NewEmbed);
+            });
+            reject();
+          });
         //});
       });
     }
